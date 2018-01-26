@@ -3,7 +3,7 @@
     require_once 'scripts/functions.php';
 
     // If user not logged in, redirect to login page
-    if(!isset($_SESSION["username"])) headerLocation('login.php');
+    if(!isset($_SESSION["username"]) || !$_SESSION['userEnabled']) headerLocation('login.php');
 
     // Check for URL ID
     if(isset($_GET['id'])) $id = $_GET['id'];

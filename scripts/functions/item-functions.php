@@ -1,6 +1,7 @@
 <?php
     require_once ABSPATH . "vendor/fpdf181/fpdf.php";
     require_once ABSPATH . "vendor/fpdf181/font/helveticab.php";
+
     //Get correct price in/out
     function getPriceMode()
     {
@@ -35,7 +36,8 @@
         $items = $_SESSION['order'];
         foreach($items as $itemID => $quantity)
         {
-            $sql = "INSERT INTO menu_item_order_quantity VALUES($id,$itemID,$quantity)";
+            $sql = "INSERT INTO menu_item_order_quantity 
+                    VALUES($id,$itemID,$quantity)";
             if(!mysqli_query($conn,$sql)) echo("index.php?category=other&error=order_file");
             $idArray[] = $id;
             $id++;
@@ -58,17 +60,25 @@
 
         //Set order info
         $user = $_SESSION['username'];
+
         $mode = $_SESSION['mode'];
+
+        $business = $_SESSION['businessID'];
+
         if(!isset($_SESSION['delivCost']) || $_SESSION['delivCost'] == NULL) $delivCost = 0;
         else $delivCost = $_SESSION['delivCost'];
+
         $dateNow = getDateNow();
+
         $customerID = $_SESSION['customer_info'];
+
         $itemQuantityID = implode(",",$idArray);
 
         //Save order to DB
         if(isset($customerID))
         {
-            $sql = "INSERT INTO orders VALUES($id,'$itemQuantityID',$price,$delivCost,'$mode','$user','$dateNow',$customerID);";
+            $sql = "INSERT INTO orders 
+                    VALUES($id,'$itemQuantityID',$price,$delivCost,'$mode','$user','$dateNow',$customerID,$business);";
             if(!mysqli_query($conn,$sql)) echo("index.php?category=other&error=order_file");
             else {
                 makeOrderFile($id,$customerID,$mode);

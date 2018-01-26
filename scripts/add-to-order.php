@@ -44,24 +44,18 @@
     //If food quantity is posted, handle food order
     else if(isset($quantity))
     {
-        //If mode isn't saved already, redirect with warning
-        if(!isset($_SESSION['mode']))  echo('index.php?category=other&error=dining_not_set');
+        //Connect to database
+        $conn = sqlConnect();
 
-        //If customer info has been saved
-        else {
-            //Connect to database
-            $conn = sqlConnect();
-
-            //Get ID based on name/meat
-            if(isset($meat)) $sql = "SELECT ID FROM menu_items WHERE name=\"$name\" AND meat=\"$meat\";";
-            else $sql = "SELECT ID FROM menu_items WHERE name=\"$name\";";
-            $result = mysqli_query($conn,$sql);
-
-            // Get ID and send for adding to cart
-            while($row  = mysqli_fetch_assoc($result)) $id = $row['ID'];
-            if(addToCart($id,$quantity))
-                echo "Added successfully";
-        }
+        //Get ID based on name/meat
+        if(isset($meat)) $sql = "SELECT ID FROM menu_items WHERE name=\"$name\" AND meat=\"$meat\";";
+        else $sql = "SELECT ID FROM menu_items WHERE name=\"$name\";";
+        $result = mysqli_query($conn,$sql);
+        
+        // Get ID and send for adding to cart
+        while($row  = mysqli_fetch_assoc($result)) $id = $row['ID'];
+        if(addToCart($id,$quantity))
+            echo "Added successfully";
     }
 
     else echo($url);

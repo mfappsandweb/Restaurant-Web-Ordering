@@ -4,7 +4,7 @@
     require_once 'scripts/functions.php';
 
     //If user not logged in, redirect to login page
-    if(!isset($_SESSION["username"])) headerLocation('login.php');
+    if(!isset($_SESSION["username"]) || !$_SESSION['userEnabled']) headerLocation('login.php');
 
     //Check URL date
     if(isset($_GET['date'])) $date = $_GET['date'];

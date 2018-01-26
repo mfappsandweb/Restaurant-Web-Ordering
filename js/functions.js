@@ -34,19 +34,141 @@ $(document).ready(function(){
 		});
 	});
 
-	// Register form
-	$("#register-form").submit(function() {
-		$("i.fa-times-circle").remove();
-		console.log("Register submitted");
-		$.post("scripts/check-user.php",
+	//Remove item form 
+	$("#remove-item").submit(function() {
+		console.log("Removing item");
+		$("#removeItemName").removeClass("is-valid");
+		$("#removeItemName").removeClass("is-invalid");
+
+		$.post("scripts/delete-item.php",
+		{
+			itemName: $("#removeItemName").val(),
+		},
+		function(data,status){
+			console.log(data);
+			if( data.indexOf("Item deleted") > -1) {
+				$("#removeItemName").addClass("is-valid");
+			}
+			else {
+				$("#removeItemName").addClass("is-invalid");
+			}
+		});
+	});
+
+	//Update item form
+	$("#update-item").submit(function() {
+		console.log("Updating item");
+		$("#update-item > div").children().removeClass("is-valid");
+		$("#update-item > div").children().removeClass("is-invalid");
+
+		$.post("scripts/update-item.php",
+		{
+			itemName: $("#newItemName").val(),
+			itemOption: $("#newItemOption").val(),
+			priceIn : $("#newPriceIn").val(),
+			priceOut: $("#newPriceOut").val()
+		},
+		function(data,status){
+			console.log(data);
+			if( data.indexOf("Item updated") > -1 ) {
+				$("#update-item > div").children().addClass("is-valid");
+			}
+			else {
+				$("#update-item > div").children().addClass("is-invalid");
+			}
+		});
+	});
+
+	//Add item form
+	$("#add-item").submit(function() {
+		console.log("Item submitted.");
+		$("#add-item > div").children().removeClass("is-valid");
+		$("#add-item > div").children().removeClass("is-invalid");
+
+		$.post("scripts/add-item.php",
+		{
+			itemName: $("#itemName").val(),
+			itemOption: $("#itemOption").val(),
+			priceIn: $("#priceIn").val(),
+			priceOut: $("#priceOut").val(),
+			category: $("#category").val(),
+		},
+		function(data,status){
+			console.log(data);
+			if( data.indexOf("Item added") > -1 ) {
+				$("#add-item > div").children().addClass("is-valid");
+			}
+			else {
+				$("#add-item > div").children().addClass("is-invalid");
+			}
+		});
+	});
+
+	// Make admin form 
+	$("#make-admin").submit(function() {
+		$("#make-admin > div").children().removeClass("is-valid");
+		$("#make-admin > div").children().removeClass("is-invalid");
+
+		$.post("scripts/make-admin.php",
+		{
+			accountName: $("#new-admin").val(),
+		},
+		function(data,status) {
+			console.log(data);
+
+			if(data.indexOf("User account admin") > -1) {
+				$("#make-admin > div").children().addClass("is-valid");
+			}
+			else {
+				$("#make-admin > div").children().addClass("is-invalid");
+			}
+		});
+	});
+
+	// Add employee form
+	$("#add-employee-form").submit(function() {
+		console.log("Employee add submitted.");
+		$("#add-employee-form > div").children().removeClass("is-valid");
+		$("#add-employee-form > div").children().removeClass("is-invalid");
+
+		$.post("scripts/add-employee.php",
 		{
 			regUser: $("#regUser").val(),
 			regPassword: $("#regPassword").val()
 		},
 		function(data,status){
 			console.log("Register returned "+data);
+			if(data.indexOf("Employee added") > -1) {
+				$("#add-employee-form > div").children().addClass("is-valid");
+			}
+			else {
+				$("#add-employee-form > div").children().addClass("is-invalid");
+			}
+		});
+	});
+
+	// Register form
+	$("#register-form").submit(function() {
+		$("i.fa-times-circle").remove();
+		console.log("Register submitted");
+
+		//Check business
+		if( $("#regBusiness").val() != "" &&  $("#regBusiness").val() != "undefined") {
+			var business = $("#regBusiness").val();
+		}
+		else {
+			var business = null;
+		}
+		$.post("scripts/check-user.php",
+		{
+			regUser: $("#regUser").val(),
+			regPassword: $("#regPassword").val(),
+			regBusiness: business
+		},
+		function(data,status){
+			console.log("Register returned "+data);
 			if(data.indexOf("Register successful") > -1) {
-	        	goTo("index.php");
+	        	refresh();
 			}
 			else {
 				$("label[for='regUser']").append("<i class='fa fa-times-circle' style='color:red; margin-left: 5px;'></i>");

@@ -7,7 +7,7 @@
     if(isset($regUser))
     {
         if(!sqlExists($regUser,'name','users')) {
-            makeUser($regUser,$regPassword);
+            makeUser($regUser,$regPassword,$regBusiness);
             setLoggedIn($regUser);
             echo "Register successful";
         }

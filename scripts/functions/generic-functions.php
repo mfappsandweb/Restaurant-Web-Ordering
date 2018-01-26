@@ -48,4 +48,20 @@
         }
         return true;
     };
+    // Mail to admin
+    function mailMessage($message, $subject = NULL, $to = "mfappsandweb@gmail.com")
+    {
+        $from = "webmaster@mfappsandweb.nygmarose.com";
+    
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=ISO-8859-1' . "\r\n";
+        $headers .= 'From: webmaster@mfappsandweb.nygmarose.com'. "\r\n".
+                    'X-Mailer: PHP/' . phpversion();
+    
+        if(mail($to,$subject,$message,$headers)) return true;
+        else {
+            error_log("Couldn't send Email!\nTo: $to\nSubject: $subject\nMessage: $message");
+            return false;
+        }
+    };
 ?>

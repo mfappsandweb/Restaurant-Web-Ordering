@@ -4,7 +4,7 @@
     extract($_POST);
 
     //If user not logged in, redirect to login page
-    if(!isset($_SESSION["username"])) headerLocation('login.php');
+    if(!isset($_SESSION["username"]) || !$_SESSION['userEnabled']) headerLocation('login.php');
 
     //If catagory set in URL load catagory, otherwise load special
     if(isset($_GET["category"])) $category = $_GET["category"];
@@ -19,7 +19,7 @@
     // Load menu category list and current order list
     loadCategories();
     // Load menu items from category
-    loadMenu($category);
+    loadMenu($category,$_SESSION['businessID']);
 
     //Check for errors
     if(isset($_GET["error"]))

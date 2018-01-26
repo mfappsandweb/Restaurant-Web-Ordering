@@ -3,6 +3,7 @@
  * Licensed under Apache2 license   *
  *                                  */
  define( 'ABSPATH', dirname(dirname(__FILE__)) . '/' );
+ require_once ABSPATH . "vendor/autoload.php";
  require_once ABSPATH . "config.php";
  require_once ABSPATH . "scripts/functions/generic-functions.php";
  require_once ABSPATH . "scripts/functions/item-functions.php";
